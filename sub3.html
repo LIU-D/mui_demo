@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="css/mui.css" rel="stylesheet" />
+</head>
+
+<body>
+	<script src="js/mui.js"></script>
+	<script type="text/javascript">
+		mui.init()
+	</script>
+	
+	<div class="mui-content">
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;" title="京东">
+					<img class="mui-media-object mui-pull-left" src="images/jd.png">
+					<div class="mui-media-body">
+						京东
+						<p class="mui-ellipsis">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;" title="木屋" >
+					<img class="mui-media-object mui-pull-left" src="images/afe.png">
+					<div class="mui-media-body">
+						木屋
+						<p class="mui-ellipsis">想要这样一间小木屋，夏天挫冰吃瓜，冬天围炉取暖.</p>
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;" title="CBD">
+					<img class="mui-media-object mui-pull-left" src="images/didi.png">
+					<div class="mui-media-body">
+						CBD
+						<p class="mui-ellipsis">烤炉模式的城，到黄昏，如同打翻的调色盘一般.</p>
+					</div>
+				</a>
+			</li>
+		</ul>
+	</div>
+</body>
+<script type="text/javascript">
+mui(".mui-table-view-cell").on("tap","a",function(){
+	var title = this.getAttribute("title");
+	var imgsrc = this.children[0].getAttribute("src");
+	mui.openWindow({
+		url:"chat.html",
+		id:"chat.html",
+		show:{
+			autoShow:true,
+			aniShow:"slide-in-right",//页面显示动画，默认为”slide-in-right“；
+			duration:200,//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+		},
+		waiting:{
+			autoShow:true,//自动显示等待框，默认为true
+			title:'正在加载...',//等待对话框上显示的提示内容
+		},
+		extras:{
+			title:title,
+			imgsrc:imgsrc,
+		},
+		});
+})
+</script>
+</html>

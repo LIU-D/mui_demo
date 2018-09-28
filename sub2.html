@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">面板1</a>
+					<div class="mui-collapse-content">
+						<p>面板1子内容</p>
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">面板</a>
+						<div class="mui-collapse-content">
+						<p>面板2子内容</p>
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">面板3</a>
+					<div class="mui-collapse-content">
+						<p>面板3子内容</p>
+					</div>
+				</li>
+			</ul>
+			<button id="openOneImage" type="button" class="mui-btn mui-btn-green">打开一张图片</button>
+			<button id="openImages" type="button" class="mui-btn mui-btn-grey">打开多张图片</button>
+			<button id="captureImage" type="button" class="mui-btn mui-btn-red">拍照</button>
+			<button id="startVideo" type="button" class="mui-btn mui-btn-purple">摄像</button>
+			<div id="showIamge"></div>
+			<div id ="showVideo"></div>
+			
+		</div>
+	</body>
+<script type="text/javascript">
+mui.plusReady(function () {
+	//打开一张图片
+	document.getElementById("openOneImage").addEventListener("tap",function(){
+		plus.gallery.pick(function(path){
+			var imgdiv = document.getElementById("showIamge");
+			var img=document.createElement("img");
+			img.setAttribute("src",path);
+			img.setAttribute("width","150px");
+			imgdiv.appendChild(img);
+		}, function(e){
+			mui.toast( "取消选择图片" );
+		}, {filter:"image"})
+	})//openOneImage-EventListener
+	
+	//打开多张图片
+    document.getElementById("openImages").addEventListener("tap",function(){
+		plus.gallery.pick(function(e){
+			for(var i in e.files){
+				console.log(e.files[i]);
+				var imgdiv = document.getElementById("showIamge");
+				var img=document.createElement("img");
+				img.setAttribute("src",e.files[i]);
+				img.setAttribute("width","150px");
+				imgdiv.appendChild(img);
+			}
+		}, function(e){
+			mui.toast( "取消选择图片" );
+		}, {filter:"image",multiple:true})
+	})//openImages-EventListener
+	
+	//拍照
+	document.getElementById("captureImage").addEventListener("tap",function(){
+		var cmr = plus.camera.getCamera();
+		var res = cmr.supportedVideoResolutions[0];
+		var fmt = cmr.supportedVideoFormats[0];
+		console.log("Resolution: "+res+", Format: "+fmt);
+		cmr.captureImage( function( path ){
+			var src = "file://" + plus.io.convertLocalFileSystemURL(path);
+			var imgdiv = document.getElementById("showIamge");
+			var img=document.createElement("img");
+			img.setAttribute("src",src);
+			img.setAttribute("width","150px");
+			imgdiv.appendChild(img);
+			console.log( "Capture image  success: " + path );  
+		},
+		function( error ) {
+			mui.toast( "Capture image  failed: " + error.message );
+		},
+		{resolution:res,format:fmt}
+		);
+	})//captureImage-EventListener
+	
+	//摄像
+	document.getElementById("startVideo").addEventListener("tap",function(){
+		var cmr = plus.camera.getCamera();
+		var res = cmr.supportedVideoResolutions[0];
+		var fmt = cmr.supportedVideoFormats[0];
+		console.log("Resolution: "+res+", Format: "+fmt);
+		cmr.startVideoCapture( function( path ){
+			var src = "file://" + plus.io.convertLocalFileSystemURL(path);
+			var videoDiv = document.getElementById("showVideo");
+			var video = '<video width="150" controls><source src="' + src +'" type="video/mp4"></video>';
+			videoDiv.innerHTML = video;
+			console.log( "Capture video success: " + path );  
+		},
+		function( error ) {
+			mui.toast( "Capture video failed: " + error.message );
+		},
+		{resolution:res,format:fmt}
+		);
+	})//startVideo-EventListener
+	
+	
+})//plusReady
+</script>
+</html>
